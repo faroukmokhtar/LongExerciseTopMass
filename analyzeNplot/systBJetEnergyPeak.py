@@ -25,16 +25,77 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         'bjetenls_jer_down':ROOT.TH1F('bjetenls_jer_down',';log(E);  1/E dN_{b jets}/dlog(E)',20,3.,7.),
 
         # JEC: uncorrelated group
-
+        'bjetenls_jec_unc_up':ROOT.TH1F('bjetenls_jec_unc_up','bjetenls_jec_unc_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_unc_down':ROOT.TH1F('bjetenls_jec_unc_down','bjetenls_jec_unc_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
         # JEC: in-situ correlation group
-
+        'bjetenls_jec_in_situ_up':ROOT.TH1F('bjetenls_jec_in_situ_up','bjetenls_jec_in_situ_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
+        'bjetenls_jec_in_situ_down':ROOT.TH1F('bjetenls_jec_in_situ_down','bjetenls_jec_in_situ_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
         # JEC: inter-calibration
-
+        'bjetenls_jec_in_calib_up':ROOT.TH1F('bjetenls_jec_in_calib_up','bjetenls_jec_in_calib_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
+        'bjetenls_jec_in_calib_down':ROOT.TH1F('bjetenls_jec_in_calib_down','bjetenls_jec_in_calib_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
         # JEC: pile-up
-
+        'bjetenls_jec_pileup_up':ROOT.TH1F('bjetenls_jec_pileup_up','bjetenls_jec_pileup_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
+        'bjetenls_jec_pileup_down':ROOT.TH1F('bjetenls_jec_pileup_down','bjetenls_jec_pileup_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
         # JEC: flavour
-        
-        # Other Systematics
+        'bjetenls_jec_flavor_up':ROOT.TH1F('bjetenls_jec_flavor_up','bjetenls_jec_flavor_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
+        'bjetenls_jec_flavor_down':ROOT.TH1F('bjetenls_jec_flavor_down','bjetenls_jec_flavor_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
+
+        # bJES
+        'bjetenls_bjes_up':ROOT.TH1F('bjetenls_bjes_up','bjetenls_bjec_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_bjes_down':ROOT.TH1F('bjetenls_bjes_down','bjetenls_bjec_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+
+        #Pile up
+        'bjetenls_pileup_up':ROOT.TH1F('bjetenls_pileup_up','bjetenls_pileup_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
+        'bjetenls_pileup_down':ROOT.TH1F('bjetenls_pileup_down','bjetenls_pileup_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
+
+        # Lepton Effi
+        'bjetenls_lep_eff_up':ROOT.TH1F('bjetenls_lep_eff_up','bjetenls_lep_eff_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_lep_eff_down':ROOT.TH1F('bjetenls_lep_eff_down','bjetenls_lep_eff_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
+
+        # btag Eff b/c
+        'bjetenls_btag_eff_b_c_up':ROOT.TH1F('bjetenls_btag_eff_b_c_up','bjetenls_btag_eff_b_c_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_btag_eff_b_c_down':ROOT.TH1F('bjetenls_btag_eff_b_c_down','bjetenls_btag_eff_b_c_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+
+        # btag Eff light
+        'bjetenls_btag_eff_light_up':ROOT.TH1F('bjetenls_btag_eff_light_up','bjetenls_btag_eff_light_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_btag_eff_light_down':ROOT.TH1F('bjetenls_btag_eff_light_down','bjetenls_btag_eff_light_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+
+        # Fit Calibration 
+        'bjetenls_fit_calib_up':ROOT.TH1F('bjetenls_fit_calib_up','bjetenls_fit_calib_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_fit_calib_down':ROOT.TH1F('bjetenls_fit_calib_down','bjetenls_fit_calib_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+
+        # Non - ttbar background
+        'bjetenls_non_tt_bkg_up':ROOT.TH1F('bjetenls_non_tt_bkg_up','bjetenls_non_tt_bkg_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_non_tt_bkg_down':ROOT.TH1F('bjetenls_non_tt_bkg_down','bjetenls_non_tt_bkg_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+
+        # Generator Modeling
+        'bjetenls_gen_modeling_up':ROOT.TH1F('bjetenls_gen_modeling_up','bjetenls_gen_modeling_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_gen_modeling_down':ROOT.TH1F('bjetenls_gen_modeling_down','bjetenls_gen_modeling_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+
+        # Top pT reweighting
+        'bjetenls_tpt_reweight_up':ROOT.TH1F('bjetenls_tpt_reweight_up','bjetenls_tpt_reweight_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_tpt_reweight_down':ROOT.TH1F('bjetenls_tpt_reweight_down','bjetenls_tpt_reweight_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+
+        # Renormalization and factorization scales
+        'bjetenls_rf_scales_up':ROOT.TH1F('bjetenls_rf_scales_up','bjetenls_rf_scales_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_rf_scales_down':ROOT.TH1F('bjetenls_rf_scales_down','bjetenls_rf_scales_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+
+        # ME-PS matching threshold
+        'bjetenls_me_ps_up':ROOT.TH1F('bjetenls_me_ps_up','bjetenls_me_ps_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_me_ps_down':ROOT.TH1F('bjetenls_me_ps_down','bjetenls_me_ps_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+
+        # PDF 
+        'bjetenls_pdf_up':ROOT.TH1F('bjetenls_pdf_up','bjetenls_pdf_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_pdf_down':ROOT.TH1F('bjetenls_pdf_down','bjetenls_pdf_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+
+    # Uncertainties for modeling of non-perturbative QCD
+        # Underlying event unc 
+        'bjetenls_under_evt_QCD_up':ROOT.TH1F('bjetenls_under_evt_QCD_up','bjetenls_under_evt_QCD_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_under_evt_QCD_down':ROOT.TH1F('bjetenls_under_evt_QCD_down','bjetenls_under_evt_QCD_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+
+        # Color reconnection unc 
+        'bjetenls_color_reconnect_QCD_up':ROOT.TH1F('bjetenls_color_reconnect_QCD_up','bjetenls_color_reconnect_QCD_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_color_reconnect_QCD_down':ROOT.TH1F('bjetenls_color_reconnect_QCD_down','bjetenls_color_reconnect_QCD_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
 
         }
 
