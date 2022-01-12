@@ -5,12 +5,12 @@ from array import array
 import tdrstyle
 
 # Add a zero to the theoretical values to make a nice y=x plot
-theor=array('d',[0.0,65.740336799410,67.570939637681,69.390239814814])
+theor=array('d',[0.0,65.7403367994,67.570939637681,69.390239814814])
 #exper=array('d',[64.3,66.05,66.97]) # Pseudo
-exper=array('d',[64.89,66.34,67.09])
+exper=array('d',[64.56,65.4,66.52])
 theor_err=array('d',[0.0079,0.0077,0.0076])
 #exper_err=array('d',[0.14,0.14,0.135]) # Pseudo
-exper_err=array('d',[0.59,0.26,0.64])
+exper_err=array('d',[0.2591,0.2538,0.2467])
 
 #for i in range(0,len(exper)):
 #    exper[i]=(exper[i]-16.51)/0.729
@@ -24,9 +24,18 @@ graph = TGraphErrors(len(exper),theor[1:],exper,theor_err,exper_err)
 graph.SetMarkerColor(4)
 graph.SetMarkerStyle(21)
 graph.SetTitle("")
+graph.GetXaxis().SetTitleSize(0.04)
 graph.GetXaxis().SetTitle("Predicted Energy Peak Position [GeV]")
+graph.GetXaxis().SetTitleOffset(1.2)
+graph.GetYaxis().SetTitleSize(0.04)
 graph.GetYaxis().SetTitle("Measured Energy Peak Position [GeV]")
-graph.GetYaxis().SetTitleOffset(1.4)
+graph.GetYaxis().SetTitleOffset(1.3)
+
+graph.GetXaxis().SetLimits(63,70)
+graph.SetMaximum(67.5)
+graph.SetMinimum(63)
+
+
 
 gfit = TF1("f","[0] + [1] * x")
 graph.Fit(gfit)
@@ -60,7 +69,7 @@ label2.SetTextSize(0.06)
 label2.SetTextAlign(11)
 label2.DrawLatex(0.33, 0.92, "#it{Simulation}")
 
-leg = TLegend(0.1,0.78,0.38,0.9)
+leg = TLegend(0.13,0.75,0.41,0.87)
 leg.AddEntry(graph,"Simulation","p")
 leg.AddEntry(ideal,"Expectation","l")
 leg.AddEntry(gfit,"Fit","l")
@@ -74,7 +83,10 @@ stats.SetY2NDC(0.4)
 stats.SetX1NDC(0.6)
 stats.SetX2NDC(0.9)
 
+#a=input("")
+
 # Save the plot
-gPad.RedrawAxis()
-c1.SaveAs("calibration.pdf")
+#gPad.RedrawAxis()
+c1.SaveAs("calibration.png")
+
 
