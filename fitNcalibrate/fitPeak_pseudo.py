@@ -44,6 +44,43 @@ def gPeak(h=None,inDir=None,isData=None,lumi=None):
     fitfunc.SetLineWidth(3)
     fitfunc.SetLineStyle(1)
 
+    #Histogram creation
+    Pseudo_Exp = TH1F("Pseudo", "Pseudo", 50, 64, 71)
+	  
+    #Pseudoexperiments
+    random3 = TRandom3()
+    random3.SetSeed(1)
+    num_experiments=100 #change to 1500 later
+    for i in range(num_experiments):
+         histoClone = h.Clone()
+         for bin_n in range(histoClone.GetNbinsX()):
+             x,y = histoClone.GetBinCenter(bin_n), histoClone.GetBinContent(bin_n)
+             fluctuation = random3.PoissonD(y*math.exp(x))/math.exp(x)
+             histoClone.SetBinContent(bin_n, y + fluctuation)
+             #print(fluctuation)
+	 histoClone.Fit("Gaussian fit","EMQ", "", minToFit, maxToFit)
+         # Get Fit Parameters
+    	 mean = fitfunc.GetParameter(1)
+    	 meanErr = fitfunc.GetParError(1)
+    	 sigma = fitfunc.GetParameter(2)
+    	 sigmaErr = fitfunc.GetParError(2)
+    	 chi2 = fitfunc.GetChisquare()
+    	 NDF = fitfunc.GetNDF()
+    	 chi2ndf = chi2/NDF
+    	 # Calculate the uncalibrated Energy peak position and its uncertainty
+    	 Ereco = math.exp(mean)
+    	 Err = abs(Ereco*meanErr)
+	 #print(i, '   ', Ereco)
+	 Pseudo_Exp.Fill(Ereco)
+   
+
+    #Canvas
+    c2 = TCanvas("Pseudo_Exp","Pseudo Experiment",800,800)
+    c2.cd()
+    Pseudo_Exp.Draw()
+    c2.SaveAs("pseudo.png")
+	
+
     # Do the fit
     hFit.Fit("Gaussian fit","EM", "", minToFit, maxToFit) 
     # "E" stands for Minos, "M" for improving fit results
@@ -153,7 +190,7 @@ def gPeak(h=None,inDir=None,isData=None,lumi=None):
     p2.cd()
     hPull.GetXaxis().SetRangeUser(minToFit,maxToFit)
     hPull.Draw("e")
-    a=input("")
+    #a=input("")
     #save and delete
     sName = inDir+"/fit_";
     if isData is True:
@@ -210,16 +247,17 @@ def main():
                    if sampleInfo is not samplesList[0]: 
                        histo.Add(res.Get(str("bjetenls/bjetenls_"+sampleInfo)).Clone());
 
-           #Pseudoexperiments
-           random3 = TRandom3()
-           random3.SetSeed(1)
-	   num_experiments=10 #change to 1500 later
-           for i in range(num_experiments):
-               histoClone = histo.Clone()
-               for bin_n in range(histoClone.GetNbinsX()):
-                   x,y = histoClone.GetBinCenter(bin_n), histoClone.GetBinContent(bin_n) 
-                   fluctuation = random3.PoissonD(y*math.exp(x))/math.exp(x)
-                   print(fluctuation)
+#           Pseudoexperiments
+#           random3 = TRandom3()
+#           random3.SetSeed(1)
+#	   num_experiments=10 #change to 1500 later
+#           for i in range(num_experiments):
+#               histoClone = histo.Clone()
+#               for bin_n in range(histoClone.GetNbinsX()):
+#                   x,y = histoClone.GetBinCenter(bin_n), histoClone.GetBinContent(bin_n) 
+#                   fluctuation = random3.PoissonD(y*math.exp(x))/math.exp(x)
+#                   histoClone.SetBinContent(bin_n, y + fluctuation)   		
+#                   print(fluctuation)
 
            # Create the output directory
            if not os.path.isdir(opt.inDir):
