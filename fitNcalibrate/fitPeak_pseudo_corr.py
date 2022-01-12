@@ -44,7 +44,7 @@ def gPeak(h=None,inDir=None,isData=None,lumi=None):
     fitfunc.SetLineWidth(3)
     fitfunc.SetLineStyle(1)
 
-    peak_xmin, peak_xmax = 64, 70
+    peak_xmin, peak_xmax = 65, 70
 
     #Histogram creation
     Pseudo_Exp = TH1F("Pseudo", "Pseudo", 100, peak_xmin, peak_xmax)
@@ -53,6 +53,7 @@ def gPeak(h=None,inDir=None,isData=None,lumi=None):
     random3 = TRandom3()
     random3.SetSeed(1)
     num_experiments=1500 #change to 1500 later
+    offset_p0, offset_p1 = 29.13, 0.5382
     for i in range(num_experiments):
          histoClone = h.Clone()
          for bin_n in range(histoClone.GetNbinsX()):
@@ -73,6 +74,9 @@ def gPeak(h=None,inDir=None,isData=None,lumi=None):
     	 Ereco = math.exp(mean)
     	 Err = abs(Ereco*meanErr)
 	 #print(i, '   ', Ereco)
+         
+         #Add calibration correction
+         Ereco = (Ereco-offset_p0)/offset_p1
 	 Pseudo_Exp.Fill(Ereco)
     
     fitfunc_pseudo = TF1("Gaussian Pseudo", myFitFunc, peak_xmin, peak_xmax, 3)
@@ -80,8 +84,8 @@ def gPeak(h=None,inDir=None,isData=None,lumi=None):
     fitfunc_pseudo.SetParameter(0, 0.2*Pseudo_Exp.Integral());
     fitfunc_pseudo.SetParLimits(0, 0.01*Pseudo_Exp.Integral(), 0.5*Pseudo_Exp.Integral());
     ## Set gaussian mean starting value and limits
-    fitfunc_pseudo.SetParameter(1, 65.5);
-    fitfunc_pseudo.SetParLimits(1, peak_xmin, peak_xmax);
+    fitfunc_pseudo.SetParameter(1, 67);
+    fitfunc_pseudo.SetParLimits(1, 64, 70);
     ## Set gaussian width starting value and limits
     fitfunc_pseudo.SetParameter(2, 0.3);
     fitfunc_pseudo.SetParLimits(2, 0.01, 1.5);
@@ -102,16 +106,16 @@ def gPeak(h=None,inDir=None,isData=None,lumi=None):
     p_Ereco = math.exp(p_mean)
     p_Err = abs(p_Ereco*p_meanErr)
     
-    #pseudo_xmin, pseudo_xmax = 64.5, 66.5
+    pseudo_xmin, pseudo_xmax = 64.5, 71
     #Canvas
     c2 = TCanvas("Pseudo_Exp","Pseudo Experiment",800,800)
     c2.cd()
     Pseudo_Exp.GetXaxis().SetTitle("Energy Peak Position [GeV]")
     Pseudo_Exp.GetYaxis().SetTitle("Pseudo-experiments")
     Pseudo_Exp.Draw()
-    Pseudo_Exp.GetXaxis().SetRangeUser(peak_xmin, peak_xmax)
+    Pseudo_Exp.GetXaxis().SetRangeUser(pseudo_xmin, pseudo_xmax)
     fitfunc_pseudo.Draw("Same")
-    fitfunc_pseudo.GetXaxis().SetRangeUser(peak_xmin, peak_xmax)    
+    fitfunc_pseudo.GetXaxis().SetRangeUser(pseudo_xmin, pseudo_xmax)    
 
     p_caption1 = TLatex()
     p_caption1.SetTextSize(0.030)
@@ -156,7 +160,7 @@ def gPeak(h=None,inDir=None,isData=None,lumi=None):
     # Calculate the uncalibrated Energy peak position and its uncertainty
     Ereco = math.exp(mean)
     Err = abs(Ereco*meanErr)
-
+    Ereco_corr = (Ereco-offset_p0)/offset_p1
     # Make a pull distribution    
     hPull = h.Clone("Pull")
     for ibin in range(1, hFit.GetNbinsX()+1):
@@ -222,8 +226,8 @@ def gPeak(h=None,inDir=None,isData=None,lumi=None):
     caption2.SetTextSize(0.05)
     caption2.SetTextFont(42)
     caption2.SetNDC()  
-    caption2.DrawLatex(0.35,0.44,'Uncalibrated Measurement')
-    caption2.DrawLatex(0.35,0.39,'<E_{b}> = (%4.2f #pm %4.2f) GeV'%(Ereco,Err))
+    caption2.DrawLatex(0.35,0.44,'Calibrated Measurement')
+    caption2.DrawLatex(0.35,0.39,'<E_{b}> = (%4.2f #pm %4.2f) GeV'%(Ereco_corr,Err))
     ## CMS labels
     label1 = TLatex()
     label1.SetNDC()
